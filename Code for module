@@ -1,4 +1,6 @@
 Sub GetTick()
+
+For Each ws In Worksheets
     'Predefined Variables"
     Dim CellStart As Integer
     Dim CellSEnd As Integer
@@ -16,67 +18,67 @@ Sub GetTick()
     Dim TickGreatestVol As String
     
     'Set up for the tables"
-    Cells(1, 9).Value = "Ticker"
-    Cells(1, 10).Value = "Yearly Change"
-    Cells(1, 11).Value = "Percent Change"
-    Cells(1, 12).Value = "Total Stock Volume"
-    Cells(1, 16).Value = "Ticker"
-    Cells(1, 17).Value = "Value"
-    Cells(2, 15).Value = "Greatest % Increase"
-    Cells(3, 15).Value = "Greatest % Decrease"
-    Cells(4, 15).Value = "Greatest Total Volume"
+    ws.Cells(1, 9).Value = "Ticker"
+    ws.Cells(1, 10).Value = "Yearly Change"
+    ws.Cells(1, 11).Value = "Percent Change"
+    ws.Cells(1, 12).Value = "Total Stock Volume"
+    ws.Cells(1, 16).Value = "Ticker"
+    ws.Cells(1, 17).Value = "Value"
+    ws.Cells(2, 15).Value = "Greatest % Increase"
+    ws.Cells(3, 15).Value = "Greatest % Decrease"
+    ws.Cells(4, 15).Value = "Greatest Total Volume"
     
     
     'Defined Values before the Loop"
-    LastRowData1 = Cells(Rows.Count, 1).End(xlUp).Row
+    LastRowData1 = ws.Cells(Rows.Count, 1).End(xlUp).Row
     VolumeAmount = 0
     RowCounter = 2
-    TickOpen = Cells(2, 3)
+    TickOpen = ws.Cells(2, 3)
     
     'Start of the For Loop"
     For i = 2 To LastRowData1
-        VolumeAmount = VolumeAmount + Cells(i, 7).Value
-        If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then
+        VolumeAmount = VolumeAmount + ws.Cells(i, 7).Value
+        If ws.Cells(i, 1).Value <> ws.Cells(i + 1, 1).Value Then
         'Grab the data from the range"
-            TickClose = Cells(i, 6).Value
+            TickClose = ws.Cells(i, 6).Value
             TickAnswer = TickClose - TickOpen
             TickChange = TickAnswer / TickOpen
         'Change the Color"
         If TickAnswer < 0 Then
-            Cells(RowCounter, 10).Interior.ColorIndex = 3
+            ws.Cells(RowCounter, 10).Interior.ColorIndex = 3
         Else
-            Cells(RowCounter, 10).Interior.ColorIndex = 4
+            ws.Cells(RowCounter, 10).Interior.ColorIndex = 4
         End If
         'Print the answers"
-            Cells(RowCounter, 9).Value = (Cells(i, 1).Value)
-            Cells(RowCounter, 10).Value = TickAnswer
-            Cells(RowCounter, 11).Value = FormatPercent(TickChange)
-            Cells(RowCounter, 12).Value = VolumeAmount
+            ws.Cells(RowCounter, 9).Value = (Cells(i, 1).Value)
+            ws.Cells(RowCounter, 10).Value = TickAnswer
+            ws.Cells(RowCounter, 11).Value = FormatPercent(TickChange)
+            ws.Cells(RowCounter, 12).Value = VolumeAmount
             RowCounter = RowCounter + 1
         'Change the Values"
             VolumeAmount = 0
-            TickOpen = Cells(i + 1, 3)
+            TickOpen = ws.Cells(i + 1, 3)
         End If
     Next i
-    LastRowData2 = Cells(Rows.Count, 9).End(xlUp).Row
+    LastRowData2 = ws.Cells(Rows.Count, 9).End(xlUp).Row
     RowCounter = 2
-    Greatest = Cells(2, 11).Value
-    Greatest = Cells(2, 11).Value
-    GreatestVol = Cells(2, 12).Value
+    Greatest = ws.Cells(2, 11).Value
+    Greatest = ws.Cells(2, 11).Value
+    GreatestVol = ws.Cells(2, 12).Value
     'Secound Loop through new values"
     For j = 2 To LastRowData2
   
-        If Cells(j + 1, 11).Value > Greatest Then
-            Greatest = Cells(j, 11).Value
-            TickGreatest = Cells(j, 9).Value
+        If ws.Cells(j + 1, 11).Value > Greatest Then
+            Greatest = ws.Cells(j, 11).Value
+            TickGreatest = ws.Cells(j, 9).Value
         End If
-        If Cells(j + 1, 11).Value < Least Then
-            Least = Cells(j, 11).Value
+        If ws.Cells(j + 1, 11).Value < Least Then
+            Least = ws.Cells(j, 11).Value
             TickLeast = Cells(j, 9).Value
         End If
-        If Cells(j + 1, 12).Value > GreatestVol Then
-            GreatestVol = Cells(j, 12).Value
-            TickGreatestVol = Cells(j, 9).Value
+        If ws.Cells(j + 1, 12).Value > GreatestVol Then
+            GreatestVol = ws.Cells(j, 12).Value
+            TickGreatestVol = ws.Cells(j, 9).Value
         End If
     Next j
     'Printing next table"
@@ -86,6 +88,5 @@ Sub GetTick()
     Cells(RowCounter, 16).Value = TickGreatest
     Cells(RowCounter + 1, 16).Value = TickLeast
     Cells(RowCounter + 2, 16).Value = TickGreatestVol
-      
+  Next ws
 End Sub
-
